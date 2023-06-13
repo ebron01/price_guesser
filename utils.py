@@ -76,7 +76,7 @@ def dataPreprocess(df):
     
     # Box plots for desired columns in one plot
     #ignores unreliable date data. if date data must be included, except block will be used
-    dataVisualizer(df)
+    # dataVisualizer(df)
     
     #adds year, month, week, day, week of the year, day of the week columns for each one of 
     # ['booking_date', 'arrival_date', 'departure_date'] 
@@ -84,10 +84,11 @@ def dataPreprocess(df):
     
     #visualize booking year, month, week, day, week of the year, day of the week for 
     # ['booking_date', 'arrival_date', 'departure_date'] 
-    dateVisualizer(df, 'booking_date')
+    # dateVisualizer(df, 'booking_date')
     
-    # calculating daily average as desired output
-    df['average_amount'] = df['total_amount'] / df['night']
+    # TODO: This gives infinity error check, until then use total amount as average amount: calculating daily average as desired output
+    # df['average_amount'] = df['total_amount'] / df['night']
+    df['average_amount'] = df['total_amount']
     # Y_train = df['average_amount'] 
     # df = df.drop(['total_amount', 'average_amount'], axis=1)
     # X_train = df
