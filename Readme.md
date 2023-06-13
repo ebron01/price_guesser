@@ -1,0 +1,1 @@
+This project generates prices for a given hotel on a given date.
