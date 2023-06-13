@@ -11,6 +11,13 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
-        }
+        },
+        {
+            "name": "guesser",
+            "type": "python",
+            "request": "launch",
+            "program": "guesser.py",
+            "console": "integratedTerminal",
+            "justMyCode": false          }
     ]
 }
