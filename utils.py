@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 import matplotlib.dates as mpl_dates
+import numpy as np
 
 
 def dateVisualizer(df, dateType):
@@ -48,12 +49,22 @@ def dateParser(df, df_ignore):
 
     for key in df_ignore:
         df[key] += pd.to_timedelta(df.hour, unit='h')
+        # TODO: think of year parameter to be used.
         df[key + '_year'] = df[key].dt.year
-        df[key+'_month'] = df[key].dt.month
+        # df[key+'_month'] = df[key].dt.month
+        df[key+'_mnth_sin'] = np.sin((df[key].dt.month-1)*(2.*np.pi/12))
+        df[key+'_mnth_cos'] = np.cos((df[key].dt.month-1)*(2.*np.pi/12))
         df[key+'_week'] = df[key].dt.isocalendar().week
-        df[key+'_day'] = df[key].dt.day
-        df[key+'_dayofweek'] = df[key].dt.dayofweek
-
+        # df[key+'_day'] = df[key].dt.day
+        df[key+'_day_sin'] = np.sin((df[key].dt.day-1)*(2.*np.pi/31))
+        df[key+'_day_cos'] = np.cos((df[key].dt.day-1)*(2.*np.pi/31))
+        # TODO: think of using one hot encoding, sunday denoted as 6 monday-0.
+        # this may trick model to assign higher priority ex: to sunday considered with saturday.  features = pd.get_dummies(features)
+        # df[key+'_dayofweek'] = df[key].dt.dayofweek
+        df[key +
+            '_dayofweek_sin'] = np.sin((df[key].dt.dayofweek-1)*(2.*np.pi/7))
+        df[key +
+            '_dayofweek_cos'] = np.cos((df[key].dt.dayofweek-1)*(2.*np.pi/7))
     return df.drop(['hour'], axis=1)
 
 
@@ -100,6 +111,7 @@ def dataPreprocess(df):
 
     df['average_amount'] = df['total_amount'] / df['night']
 
-    df = df.drop(['booking_date', 'arrival_date', 'departure_date'], axis=1)
+    df = df.drop(['booking_date', 'arrival_date',
+                 'departure_date', 'booking_no'], axis=1)
     return df
     # return X_train, Y_train
