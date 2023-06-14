@@ -5,6 +5,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
+import numpy as np
 
 
 class RandomForest():
@@ -18,12 +19,23 @@ class RandomForest():
 
     def predict(self, X_valid, Y_valid):
         x_pred = self.rf.predict(X_valid)
+
+        # Print out the mean absolute error (mae)
+        # errors = abs(x_pred - Y_valid)
+        # print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+
+        # mape = 100 * (errors / Y_valid)  # Calculate and display accuracy
+        # accuracy = 100 - np.mean(mape)
+        # print('Accuracy:', round(accuracy, 2), '%.')
+        # return accuracy
         mse = metrics.mean_squared_error(x_pred, Y_valid)
         rmse = mse**0.5
         return rmse
 
 
 class MLPR():
+    '''Multi Layer Perceptron'''
+
     def __init__(self, X_train, y_train):
         # Construct the pipeline with a standard scaler and a small neural network
         self.estimators = []

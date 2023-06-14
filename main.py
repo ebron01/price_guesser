@@ -3,7 +3,7 @@ from utils import *
 import os
 from model.RandomForest import RandomForest, MLPR
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
-
+from sklearn import metrics
 
 projectDir = os.path.join(os.getcwd(), 'data')
 
@@ -24,18 +24,26 @@ def main():
     X_train, X_valid, Y_train, Y_valid = train_test_split(X_data.drop(
         ['total_amount', 'average_amount'], axis=1).values, X_data['average_amount'].values, test_size=0.2)
 
-    # regr = RandomForest(X_train, Y_train)
-    mlpr = MLPR(X_data.drop(
-        ['total_amount', 'average_amount'], axis=1).values, X_data['average_amount'].values)
+    regr = RandomForest(X_train, Y_train)
+    # mlpr = MLPR(X_data.drop(
+    # ['total_amount', 'average_amount'], axis=1).values, X_data['average_amount'].values)
 
-    for i in range(15):
-        # regr.forward()
-        mlpr_results = mlpr.forward()
-        # loss = regr.predict(X_valid, Y_valid)
+    from sklearn.linear_model import LinearRegression
 
-        # print(f"Random Forest Reg rmse: {loss}")
-        print('CV Scoring Result: mean=', np.mean(
-            mlpr_results), 'std=', np.std(mlpr_results))
+    lm = LinearRegression()
+    lm.fit(X_train, Y_train)
+    new_pred = lm.predict(X_valid)
+    print(np.sqrt(metrics.mean_squared_error(Y_valid, new_pred)))
+
+    # for i in range(15):
+    #     regr.forward()
+    #     # mlpr_results = mlpr.forward()
+    #     loss = regr.predict(X_valid, Y_valid)
+
+    #     print(f"Random Forest Reg rmse: {loss}")
+
+    # print('CV Scoring Result: mean=', np.mean(
+    # mlpr_results), 'std=', np.std(mlpr_results))
 
 
 if __name__ == '__main__':
